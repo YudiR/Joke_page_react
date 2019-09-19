@@ -3,19 +3,36 @@ import { Badge, Card, Container, Col, Row } from "react-bootstrap";
 
 function layout(props) {
   return (
-    <div style={{display:'flex',justifyContent: 'center', alignItems: 'center'}}>
-        <Container>
-            <Row >
-      <Badge style={{width: '1050px'}} variant="primary">{props.title}</Badge>
-      </Row>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <Container>
+        <Row>
+            <Col md={{ span: 12, offset: 0 }}>
+          <h1>
+          {/* style={{ width: "1050px" }} */}
+            <Badge variant="primary">
+              {props.title}
+            </Badge>
+          </h1>
+          </Col>
+        </Row>
 
-      <Row>
-          <Col md={{ span: 11, offset:0 }}>
-      <Card>
-        <Card.Body style={{ marginBottom: '50px'}}>{props.body}</Card.Body>
-      </Card>
-      </Col>
-      </Row>
+        <Row>
+          <Col md={{ span: 11, offset: 0 }}>
+            <Card>
+              <h3>
+                <Card.Body style={{ marginBottom: "50px" }}>
+                  {props.body}
+                </Card.Body>
+              </h3>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </div>
   );

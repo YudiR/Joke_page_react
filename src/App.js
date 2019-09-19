@@ -34,7 +34,7 @@ class App extends React.Component {
         console.log("Success:", data);
         this.setState({ apiJoke: data.value.joke });
       });
-    var intervalId = setInterval(this.apiJoke, 3000);
+    var intervalId = setInterval(this.apiJoke, 9000);
   }
 
   apiJoke = props => {
@@ -56,7 +56,7 @@ class App extends React.Component {
   render() {
     console.log("props!!!", this.props);
     return (
-      <div>
+      <div style={{ }}>
         <ApiJokes joke={this.state.apiJoke} />
         <Jokes
           answer={this.state.jokes[this.number].a}
