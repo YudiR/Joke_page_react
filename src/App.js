@@ -1,14 +1,19 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import ApiJokes from "./components/apiJokes";
-import Jokes from "./components/jokes";
+import MainPage from "./pages/mainPage";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
+import FormPage from "./pages/formPage";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "yudi",
       apiJoke: "",
       jokes: [
         {
@@ -20,7 +25,13 @@ class App extends React.Component {
           oneLiner:
             "A perfectionist walked into a bar…apparently, the bar wasn’t set high enough."
         }
-      ]
+      ],
+      urQuestion: "",
+      urAnswer: "",
+      urOneLiner: "",
+      urName: "",
+      urIsOneLiner: "",
+      urCategory: ""
     };
     this.number = 0;
   }
@@ -53,16 +64,47 @@ class App extends React.Component {
     console.log(this.number);
   };
 
+  change = event => {
+    const { name, value, type, checked } = event.target;
+    type === "checkbox"
+      ? this.setState({ [name]: checked })
+      : this.setState({ [name]: value });
+    console.log("namenamenamename", this.state.name);
+  };
   render() {
-    console.log("props!!!", this.props);
     return (
-      <div style={{ }}>
-        <ApiJokes joke={this.state.apiJoke} />
-        <Jokes
-          answer={this.state.jokes[this.number].a}
-          question={this.state.jokes[this.number].q}
-          oneLiner={this.state.jokes[this.number].oneLiner}
-        />
+      <div style={{}}>
+        <Router>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={props => (
+                <MainPage
+                  apiJoke={this.state.apiJoke}
+                  answerJoke={this.state.jokes[this.number].a}
+                  questionJoke={this.state.jokes[this.number].q}
+                  oneLinerJoke={this.state.jokes[this.number].oneLiner}
+                />
+              )}
+            />
+            />
+            <Route
+              path="/yourjoke"
+              exact
+              render={props => (
+                <FormPage
+                  change={this.change}
+                  answer={this.state.UrAnswer}
+                  name={this.state.urName}
+                  category={this.state.urCategory}
+                  isOneLiner={this.state.urIsOneLiner}
+                  question={this.state.Urquestion}
+                />
+              )}
+            />
+          </Switch>
+        </Router>
       </div>
     );
   }

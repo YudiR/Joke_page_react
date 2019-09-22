@@ -5,7 +5,7 @@ function layout(props) {
   return (
     <div
       style={{
-        display: "flex",
+       
         justifyContent: "center",
         alignItems: "center"
       }}
@@ -26,7 +26,7 @@ function layout(props) {
           <Col md={{ span: 11, offset: 0 }}>
             <Card>
               <h3>
-                <Card.Body style={{ marginBottom: "50px" }}>
+                <Card.Body style={{  }}>
                   {props.body}
                 </Card.Body>
               </h3>
