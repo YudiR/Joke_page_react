@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from './layout'
+import Layout from '../jokeLayout/layout'
 function apiJokes(props) {
 
   return( <div style={{marginTop: '35px'}}

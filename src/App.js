@@ -26,12 +26,12 @@ class App extends React.Component {
             "A perfectionist walked into a bar…apparently, the bar wasn’t set high enough."
         }
       ],
-      urQuestion: "",
-      urAnswer: "",
-      urOneLiner: "",
-      urName: "",
-      urIsOneLiner: "",
-      urCategory: ""
+      // urQuestion: "",
+      // urAnswer: "",
+      // urOneLiner: "",
+      // urName: "",
+      // urIsOneLiner: "",
+      // urCategory: ""
     };
     this.number = 0;
   }
@@ -42,7 +42,7 @@ class App extends React.Component {
     })
       .then(e => e.json())
       .then(data => {
-        console.log("Success:", data);
+        // console.log("Success:", data);
         this.setState({ apiJoke: data.value.joke });
       });
     var intervalId = setInterval(this.apiJoke, 9000);
@@ -54,23 +54,17 @@ class App extends React.Component {
     })
       .then(e => e.json())
       .then(data => {
-        console.log("Success:", data);
+        // console.log("Success:", data);
         this.setState({ apiJoke: data.value.joke });
       });
     this.number = this.number + 1;
     if (this.number > 2) {
       this.number = 0;
     }
-    console.log(this.number);
+    // console.log(this.number);
   };
 
-  change = event => {
-    const { name, value, type, checked } = event.target;
-    type === "checkbox"
-      ? this.setState({ [name]: checked })
-      : this.setState({ [name]: value });
-    console.log("namenamenamename", this.state.name);
-  };
+
   render() {
     return (
       <div style={{}}>
@@ -94,12 +88,12 @@ class App extends React.Component {
               exact
               render={props => (
                 <FormPage
-                  change={this.change}
-                  answer={this.state.UrAnswer}
-                  name={this.state.urName}
-                  category={this.state.urCategory}
-                  isOneLiner={this.state.urIsOneLiner}
-                  question={this.state.Urquestion}
+                  // change={this.change}
+                  // answer={this.state.UrAnswer}
+                  // name={this.state.urName}
+                  // category={this.state.urCategory}
+                  // isOneLiner={this.state.urIsOneLiner}
+                  // question={this.state.Urquestion}
                 />
               )}
             />

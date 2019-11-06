@@ -1,5 +1,5 @@
 import React from "react";
-import ComponentForm from '../components/formComponent'
+import ComponentForm from '../components/jokeForm/formComponent'
 function Forms(props) {
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'flexEnd', }}>
