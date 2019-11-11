@@ -1,0 +1,23 @@
+.WelcomePage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8 16px;
+  border: 500px;
+  margin: 200px;
+}
+
+.NameInputOne{
+    font-size: 10vh
+}
+
+
+.NameInputTwo{
+    font-size: 10vh
+}
+
+.InputTitle{
+    background-color:black,;
+    font-size: 1.3rem
+}

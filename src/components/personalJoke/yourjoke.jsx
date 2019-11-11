@@ -4,7 +4,7 @@ import Joke from '../aQandOneLinerJokes/jokes'
 function yourJoke (props) {
     return(
         <div>
-<Joke question = {props.question} answer={props.answer} oneLiner={props.oneLiner} />
+<Joke question = {props.question} name={props.name} answer={props.answer} oneLiner={props.oneLiner} />
 
         </div>
     )

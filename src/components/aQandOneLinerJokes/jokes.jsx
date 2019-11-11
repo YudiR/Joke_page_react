@@ -19,7 +19,7 @@ function jokes(props) {
   }
   return (
     <div style={{ marginTop: "75px" }}>
-      <Layout title={title} body={body} />
+      <Layout name={props.name} title={title} body={body} />
       {props.answer && <Layout title="Answer" body={props.answer} />}
     </div>
   );

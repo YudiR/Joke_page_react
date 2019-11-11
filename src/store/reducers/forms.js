@@ -1,7 +1,8 @@
 const initialState = {
-  playerOneName: null,
-  playerTwoName: null,
-  jokes: []
+  playerOneName: 'Player Two',
+  playerTwoName: 'Player One',
+  jokes: [],
+  linkFromForm: false
 };
 
 // {title: null,isOneLiner: false, oneLiner: null, question }
@@ -12,10 +13,12 @@ const reducer = (state = initialState, action) => {
       return { ...state, 
         jokes: state.jokes.concat(action.joke)
       };
-    case "REMOVE_INGREDIENT":
-      return { ...state };
-    case "SET_INGREDIENTS":
-      return { ...state };
+    case "PLAYERS_NAMES":
+      return { ...state,
+      playerOneName:action.playerOneName,
+    playerTwoName: action.playerTwoName };
+    case "LINK_FROM_FORM":
+      return { ...state, linkFromForm: true };
     case "FETCH_INGREDIENTS_FAILED":
       return { ...state };
     default:

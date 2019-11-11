@@ -4,42 +4,48 @@ import Jokes from "../components/aQandOneLinerJokes/jokes";
 import { Link } from "react-router-dom";
 import YourJoke from "../components/personalJoke/yourjoke";
 import { connect } from "react-redux";
+import {Button  as BButton}  from 'react-bootstrap'
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { index: 0 };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.apiJoke !== this.props.apiJoke) {
+      if (this.props.jokeData.length >= 1) {
+        if (this.props.jokeData.length - 1 > this.state.index) {
+          var dummyData = this.state.index;
+          this.setState({ index: dummyData + 1 });
+          console.log("if index state", this.state.index);
+        } else {
+          this.setState({ index: 0 });
+        }
+      }
+    }
   }
 
   render() {
-    console.log("redux joke data", this.props.jokeData);
-    if (this.props.jokeData[0]) {
-      console.log("redux joke data", this.props.jokeData[0].question);
-    }
-    // console.log("redux joke data", this.props.jokeData[0].name);
-    // console.log("redux joke data", this.props.jokeData[0].answer);
     return (
       <div>
-        <h1>
-          <Link to="/yourjoke">Make a Joke!</Link>
-          {this.props.jokeData.legnth}
-        </h1>
+       
         {this.props.jokeData.length === 0 ? null : (
           <YourJoke
-            answer={this.props.jokeData[0].answer}
-            oneLiner={this.props.jokeData[0].oneLiner}
-            question={this.props.jokeData[0].question}
+            answer={this.props.jokeData[this.state.index].answer}
+            oneLiner={this.props.jokeData[this.state.index].oneLiner}
+            question={this.props.jokeData[this.state.index].question}
+            name={this.props.jokeData[this.state.index].name}
           />
         )}
-        <ApiJokes joke={this.props.apiJoke} />
-        {/*  */}
+        <div className="yourJoke">
+          <ApiJokes joke={this.props.apiJoke} />
+        </div>
+
         <Jokes
           answer={this.props.answerJoke}
-          //
           question={this.props.questionJoke}
-          //
           oneLiner={this.props.oneLinerJoke}
-          //
         />
       </div>
     );
@@ -47,7 +53,6 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state, "redux state");
   return {
     isOneLiner: state.forms.playerOneName,
     jokeData: state.forms.jokes

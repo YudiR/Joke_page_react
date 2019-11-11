@@ -18,6 +18,9 @@ function layout(props) {
             <Badge variant="primary">
               {props.title}
             </Badge>
+            <Badge style={{padding:"5vh"}}variant="primary">
+              {props.name}
+            </Badge>
           </h1>
           </Col>
         </Row>
