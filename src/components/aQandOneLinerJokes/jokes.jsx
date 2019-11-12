@@ -20,7 +20,7 @@ function jokes(props) {
   return (
     <div style={{ marginTop: "75px" }}>
       <Layout name={props.name} title={title} body={body} />
-      {props.answer && <Layout title="Answer" body={props.answer} />}
+      {props.answer && <Layout name={props.name} title="Answer" body={props.answer} />}
     </div>
   );
 }

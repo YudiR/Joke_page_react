@@ -18,7 +18,7 @@ function layout(props) {
             <Badge variant="primary">
               {props.title}
             </Badge>
-            <Badge style={{padding:"5vh"}}variant="primary">
+            <Badge style={{marginLeft:'2.5vh'}}variant="primary">
               {props.name}
             </Badge>
           </h1>
@@ -32,6 +32,7 @@ function layout(props) {
                 <Card.Body style={{  }}>
                   {props.body}
                 </Card.Body>
+                
               </h3>
             </Card>
           </Col>

@@ -11,6 +11,7 @@ import {
 import FormPage from "./pages/formPage";
 import WelcomePage from './pages/welcomePage/welcomePage'
 import Navbar from './components/navBar/navBar'
+import { connect } from "react-redux";
 
 
 class App extends React.Component {
@@ -42,7 +43,7 @@ class App extends React.Component {
         // console.log("Success:", data);
         this.setState({ apiJoke: data.value.joke });
       });
-      var intervalId = setInterval(this.apiJoke, 9000);
+      var intervalId = setInterval(this.apiJoke, 3000);
     }
     
     apiJoke = props => {
@@ -74,21 +75,25 @@ class App extends React.Component {
             <Route
               path="/mainPage"
               exact
-              render={props => (
+              render={props => ( 
+                this.props.namesSubmitted ?
                 <MainPage
                 apiJoke={this.state.apiJoke}
                   answerJoke={this.state.jokes[this.number].a}
                   questionJoke={this.state.jokes[this.number].q}
                   oneLinerJoke={this.state.jokes[this.number].oneLiner}
-                />
+                /> :  <WelcomePage/>
+
               )}
             />
             />
             <Route
               path="/yourjoke"
               exact
-              render={props => (
-                <FormPage     />
+              render={props => ( 
+                this.props.namesSubmitted ?
+                <FormPage     />:
+                <WelcomePage/>
               )}
             />
             <Route path="/" exact render={props => <WelcomePage/>} />
@@ -99,4 +104,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    namesSubmitted: state.forms.namesSubmitted
+  }
+}
+
+export default connect(mapStateToProps)(App);

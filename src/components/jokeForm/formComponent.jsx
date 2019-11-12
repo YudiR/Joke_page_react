@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Form, Button, Col, Row } from "react-bootstrap";
+import { Container, Form, Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import CButton from "../ui/button";
-import * as action from "../../store/actions/forms"
-
+import css from "./formComponent.css";
+import * as action from "../../store/actions/forms";
 
 export class Forms extends Component {
   constructor(props) {
@@ -16,8 +16,15 @@ export class Forms extends Component {
       question: "",
       answer: "",
       showForm: false,
-      name: ''
+      name: "",
+      colour: "danger"
     };
+  }
+
+  componentDidMount() {
+    if (this.props.isOnePlayer) {
+      this.setState({ name: this.props.playerOne, showForm: true });
+    }
   }
 
   change = event => {
@@ -44,35 +51,35 @@ export class Forms extends Component {
       question: this.state.question,
       answer: this.state.answer,
       name: this.state.name
-
     };
 
     this.props.onFormJokeSubmit(jokeData);
+    this.state.colour === "danger"
+      ? this.setState({ colour: "primary" })
+      : this.setState({ colour: "danger" });
   };
 
-  link = () =>{
-    console.log('hey')
-  }
-
-  clicked =(name) => {
+  clicked = name => {
     // console.log('clicked')
-    this.setState({showForm: true, name: name})
-  }
+    this.setState({ showForm: true, name: name });
+  };
 
   render() {
     const jokeForm = (
       <Form>
-        <Form.Group id="formGridCheckbox">
-          <Form.Check
-            // value={isOneLiner}
-            name="isOneLiner"
-            type="checkbox"
-            label="One Liner"
-            onChange={event => {
-              this.change(event);
-            }}
-          />
-        </Form.Group>
+        <div className="CheckBoxAndSubmit">
+          <Form.Group id="formGridCheckbox">
+            <Form.Check
+              // value={isOneLiner}
+              name="isOneLiner"
+              type="checkbox"
+              label="One Liner"
+              onChange={event => {
+                this.change(event);
+              }}
+            />
+          </Form.Group>
+        </div>
         {this.state.isOneLiner === true ? (
           <Form.Group testid="oneLiner" controlId="exampleForm.ControlInput2">
             <Form.Label></Form.Label>
@@ -90,7 +97,7 @@ export class Forms extends Component {
         {this.state.isOneLiner === true ? null : (
           <React.Fragment>
             <Form.Group controlId="exampleForm.ControlInput1">
-              <Form.Label></Form.Label>
+              <Form.Label>Question</Form.Label>
               <Form.Control
                 // value={email}
                 // type="email"
@@ -107,6 +114,7 @@ export class Forms extends Component {
               <Form.Control
                 // value={answer}
                 as="textarea"
+                placeholder="Answer"
                 name="answer"
                 rows="3"
                 onChange={event => {
@@ -116,26 +124,39 @@ export class Forms extends Component {
             </Form.Group>
           </React.Fragment>
         )}
-
-        <Button onClick={this.submit} variant="danger">
-          SUBMIT YOUR JOKE
-        </Button>
+        <div className="CheckBoxAndSubmit">
+          <Button onClick={this.submit} variant={this.state.colour}>
+            SUBMIT YOUR JOKE
+          </Button>
+        </div>
       </Form>
     );
 
     const whichPlayer = (
-      <React.Fragment>
+      <div className="WhoseJoke">
         {" "}
-        <CButton click={()=> this.clicked(this.props.playerOne)}class="WelcomeButton">{this.props.playerOne}</CButton>
-        <CButton click={()=> this.clicked(this.props.playerTwo)}colour='danger' class="WelcomeButton">{this.props.playerTwo}</CButton>
-      </React.Fragment>
+        <CButton
+          click={() => this.clicked(this.props.playerOne)}
+          class="WelcomeButton"
+        >
+          {this.props.playerOne}
+        </CButton>
+        {this.props.isOnePlayer ? null : (
+          <CButton
+            click={() => this.clicked(this.props.playerTwo)}
+            colour="danger"
+            class="WelcomeButton"
+          >
+            {this.props.playerTwo}
+          </CButton>
+        )}
+      </div>
     );
 
     return (
-      <div style={{ padding: "60 0", paddingTop: "100px" }}>
-        
-        {this.state.showForm === false && whichPlayer}
-        {this.state.showForm && jokeForm}
+      <div style={{ margin: "10vh" }}>
+        {this.props.isOnePlayer === false && whichPlayer}
+        {jokeForm}
       </div>
     );
   }
@@ -143,6 +164,7 @@ export class Forms extends Component {
 
 const mapStateToProps = state => {
   return {
+    isOnePlayer: state.forms.isOnePlayer,
     jokes: state.forms.jokes,
     playerOne: state.forms.playerOneName,
     playerTwo: state.forms.playerTwoName
@@ -151,12 +173,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFormJokeSubmit: joke => dispatch({ type: "SUBMIT_JOKE_FORM", joke: joke }),
-    onLink:() => {dispatch (action.linkFromForm())}
+    onFormJokeSubmit: joke => dispatch({ type: "SUBMIT_JOKE_FORM", joke: joke })
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Forms);
+export default connect(mapStateToProps, mapDispatchToProps)(Forms);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Button from "../../components/ui/button";
 import { InputGroup, FormControl } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as action from "../../store/actions/forms";
 import css from "./welcomePage.css";
@@ -21,9 +22,11 @@ class WelcomePage extends Component {
     switch (amountOfPlayers) {
       case "onePlayer":
         this.setState({ showInput: true });
+        this.props.onOnePlayer(true);
         break;
       case "twoPlayers":
         this.setState({ isTwoPlayers: true, showInput: true });
+        this.props.onOnePlayer(false);
         break;
     }
   };
@@ -34,23 +37,26 @@ class WelcomePage extends Component {
   };
 
   onSubmit = () => {
+    
     var playerOne = this.state.playerOnesName;
     var playerTwo = this.state.playerTwosName;
     console.log("player two", this.state.playerTwosName);
     if (playerTwo === "") {
-      playerTwo = 'Player Two';
+      playerTwo = "Player Two";
     }
     if (playerOne === "") {
-      playerOne = 'Player One';
+      playerOne = "Player One";
     }
     this.props.onNameSubmit(playerOne, playerTwo);
-  this.props.fromForm ? this.props.history.push('/yourJoke') : this.props.history.push('/mainPage')   
+      
+    const url = window.location.href.indexOf('yourJoke') > -1 ? '/yourJoke' : '/mainPage' 
+
+    this.props.history.push(url);
   };
 
   render() {
     const buttons = (
-      <React.Fragment>
-        {" "}
+      <div className="WelcomeButtons">
         <Button
           class="WelcomeButton"
           click={() => this.numberOfPlayers("onePlayer")}
@@ -65,11 +71,11 @@ class WelcomePage extends Component {
         >
           Two Players!!
         </Button>
-      </React.Fragment>
+      </div>
     );
 
     const input = (
-      <React.Fragment>
+      <div className="WelcomeInput">
         <InputGroup className="mb-3">
           <InputGroup.Prepend>
             <InputGroup.Text className="InputTitle" id="basic-addon1">
@@ -77,7 +83,7 @@ class WelcomePage extends Component {
             </InputGroup.Text>
           </InputGroup.Prepend>
           <FormControl
-            className="NameInputOne"
+            className="NameInput"
             placeholder="Name"
             aria-label="Username"
             aria-describedby="basic-addon1"
@@ -95,7 +101,7 @@ class WelcomePage extends Component {
               </InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
-              className="NameInputTwo"
+              className="NameInput"
               placeholder="Name"
               aria-label="Username"
               aria-describedby="basic-addon1"
@@ -106,7 +112,7 @@ class WelcomePage extends Component {
             />
           </InputGroup>
         )}
-      </React.Fragment>
+      </div>
     );
     var submitButton = (
       <Button
@@ -132,19 +138,17 @@ const mapDispatchToProps = dispatch => {
   return {
     onNameSubmit: (one, two) => {
       dispatch(action.playersNames(one, two));
+    },
+    onOnePlayer: player => {
+      dispatch(action.onePlayer(player));
     }
   };
 };
 
-const mapStateToProps = (state) => {
-  return {
-fromForm: state.forms.linkFromForm
-  }
-}
+const mapStateToProps = state => {
+  return {};
+};
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(WelcomePage)
+  connect(mapStateToProps, mapDispatchToProps)(WelcomePage)
 );

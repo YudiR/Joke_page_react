@@ -6,8 +6,9 @@ export const playersNames = (nameOne, nameTwo) => {
   };
 };
 
-export const linkFromForm = () => {
+export const onePlayer = (player) => {
     return {
-      type: "LINK_FROM_FORM",
+      type: "ONE_PLAYER",
+      player: player
     };
   };

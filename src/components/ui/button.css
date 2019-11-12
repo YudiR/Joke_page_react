@@ -1,10 +1,9 @@
 
 .WelcomeButton {
-    padding: 2vh 18vh;
-    margin: 3vh
+    /* padding: 2vh 18vh;
+    margin: 3vh */
+    margin: 2vh;
+    padding: 3.5vh
+   
 }
 
-.SubmitButton {
-    padding: 5vh 30vh;
-    margin: 5vh
-}

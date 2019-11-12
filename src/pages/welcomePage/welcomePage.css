@@ -3,21 +3,52 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 8 16px;
-  border: 500px;
-  margin: 200px;
-}
-
-.NameInputOne{
-    font-size: 10vh
+/*   
+  max-width: 75%; */
 }
 
 
-.NameInputTwo{
-    font-size: 10vh
+
+.InputTitle {
+  font-size: 1.3rem;
 }
 
-.InputTitle{
-    background-color:black,;
-    font-size: 1.3rem
+.WelcomeButtons{
+    margin: 17vh;
 }
+
+.WelcomeInput{
+    margin-top: 10vh;
+}
+
+.SubmitButton {
+    margin: 5vh
+}
+
+ 
+@media (min-width: 141px) and (min-height: 101px) {
+    .NameInput {
+      font-size: 3vh;
+    }
+    
+  }
+
+@media (min-width: 300px) and (min-height: 201px) {
+    .NameInput {
+      font-size: 5vh;
+    }
+    
+  }
+
+@media (min-width: 500px) and (min-height: 401px) {
+  .NameInput {
+    font-size: 8vh;
+  }
+  
+}
+
+@media (min-width: 1000px) and (min-height: 700px) {
+  .NameInput {
+    font-size: 12vh;
+  }
+} 

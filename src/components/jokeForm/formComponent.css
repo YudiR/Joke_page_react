@@ -1,0 +1,16 @@
+.CheckBoxAndSubmit {
+  display: flex;
+  justify-content: center;
+}
+
+.WhoseJoke {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap
+  }
+
+
+@media (min-width: 450px) and (min-height: 550px) {
+    
+    
+  }
