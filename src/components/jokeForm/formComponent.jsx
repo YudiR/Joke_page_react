@@ -17,10 +17,13 @@ export class Forms extends Component {
       answer: "",
       showForm: false,
       name: "",
-      colour: "danger"
+      alertName: "",
+      colour: "danger",
+      submitClicked: false,
+      submitAlertColour: "red",
     };
   }
-
+  
   componentDidMount() {
     if (this.props.isOnePlayer) {
       this.setState({ name: this.props.playerOne, showForm: true });
@@ -54,9 +57,34 @@ export class Forms extends Component {
     };
 
     this.props.onFormJokeSubmit(jokeData);
+
+    // submit buttons colour
     this.state.colour === "danger"
       ? this.setState({ colour: "primary" })
       : this.setState({ colour: "danger" });
+
+    // submit alert colour
+    this.state.submitAlertColour === "red"
+      ? this.setState({ submitAlertColour: "blue" })
+      : this.setState({ submitAlertColour: "red" });
+
+    this.setState({ submitClicked: true });
+
+    setTimeout(() => {
+      this.setState({ submitClicked: false });
+    }, 2500);
+
+    // finding amount of jokes submitted by user
+    const playersJokes = this.props.jokes.filter(
+      joke => joke.name === this.state.name
+    );
+
+    if (this.state.name !== "") {
+      this.setState({ playersJokes: playersJokes.length + 1 });
+    }
+
+    // name for alert. setting state here so the name will only change on submit
+    this.setState({alertName: this.state.name})
   };
 
   clicked = name => {
@@ -153,8 +181,48 @@ export class Forms extends Component {
       </div>
     );
 
+    // Player seleceted displayed at top of page
+    const selectedPlayer = (
+      <h3 style={{ display: "flex", justifyContent: "center" }}>
+        {" "}
+        {this.state.name}
+      </h3>
+    );
+    // Joke submitted alert. Top of page
+    let jokeSubmitted = (
+      <h3
+        style={{
+          color: this.state.submitAlertColour,
+          display: "flex",
+          justifyContent: "center"
+        }}
+      >
+      
+        Joke Submitted!
+      </h3>
+
+    )
+
+    if (this.state.name !== "" ) {jokeSubmitted = (
+      <h3
+        style={{
+          color: this.state.submitAlertColour,
+          display: "flex",
+            justifyContent: "center"
+        }}
+      >
+        {this.state.Alertname + "'s"}{" "}
+        {this.state.playersJokes > 8 
+          ? this.state.playersJokes + "th"
+          : this.state.playersJokes + "st"}{" "}
+        Joke Submitted!
+      </h3>
+
+    ); } 
     return (
       <div style={{ margin: "10vh" }}>
+        {selectedPlayer}
+        {this.state.submitClicked && jokeSubmitted}
         {this.props.isOnePlayer === false && whichPlayer}
         {jokeForm}
       </div>

@@ -1,7 +1,9 @@
 import React from "react";
 import { Badge, Card, Container, Col, Row } from "react-bootstrap";
+import { connect } from "react-redux";
 
 function layout(props) {
+  const colour = props.playerOne === props.name ? 'primary' : 'danger'
   return (
     <div
       style={{
@@ -18,7 +20,7 @@ function layout(props) {
             <Badge variant="primary">
               {props.title}
             </Badge>
-            <Badge style={{marginLeft:'2.5vh'}}variant="primary">
+            <Badge style={{marginLeft:'2.5vh'}}variant={colour}>
               {props.name}
             </Badge>
           </h1>
@@ -41,4 +43,10 @@ function layout(props) {
     </div>
   );
 }
-export default layout;
+
+const mapStateToProps = (state) => {
+  return {
+    playerOne: state.forms.playerOneName
+  }
+}
+export default connect(mapStateToProps)(layout);

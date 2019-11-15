@@ -43,7 +43,7 @@ class App extends React.Component {
         // console.log("Success:", data);
         this.setState({ apiJoke: data.value.joke });
       });
-      var intervalId = setInterval(this.apiJoke, 3000);
+      var intervalId = setInterval(this.apiJoke, 6000);
     }
     
     apiJoke = props => {
