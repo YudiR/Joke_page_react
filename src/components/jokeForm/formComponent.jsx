@@ -15,12 +15,12 @@ export class Forms extends Component {
       oneLiner: "",
       question: "",
       answer: "",
-      showForm: false,
       name: "",
       alertName: "",
       colour: "danger",
       submitClicked: false,
       submitAlertColour: "red",
+      playersColour: ''
     };
   }
   
@@ -29,6 +29,7 @@ export class Forms extends Component {
       this.setState({ name: this.props.playerOne, showForm: true });
     }
   }
+
 
   change = event => {
     const { name, value, type, checked } = event.target;
@@ -48,6 +49,7 @@ export class Forms extends Component {
   };
 
   submit = () => {
+    
     const jokeData = {
       isOneLiner: this.state.isOneLiner,
       oneLiner: this.state.oneLiner,
@@ -55,41 +57,55 @@ export class Forms extends Component {
       answer: this.state.answer,
       name: this.state.name
     };
-
+    
     this.props.onFormJokeSubmit(jokeData);
 
     // submit buttons colour
     this.state.colour === "danger"
-      ? this.setState({ colour: "primary" })
+    ? this.setState({ colour: "primary" })
       : this.setState({ colour: "danger" });
 
-    // submit alert colour
+      // submit alert colour
     this.state.submitAlertColour === "red"
-      ? this.setState({ submitAlertColour: "blue" })
+    ? this.setState({ submitAlertColour: "blue" })
       : this.setState({ submitAlertColour: "red" });
 
-    this.setState({ submitClicked: true });
-
-    setTimeout(() => {
-      this.setState({ submitClicked: false });
-    }, 2500);
-
-    // finding amount of jokes submitted by user
-    const playersJokes = this.props.jokes.filter(
-      joke => joke.name === this.state.name
+      // setting submitClicked to determine to show submit alert
+      this.setState({ submitClicked: true });
+        
+      clearTimeout(this.cancelSubmitClicked)
+       this.cancelSubmitClicked = setTimeout(() => {
+        this.setState({ submitClicked: false })
+        console.log('canceled submitClicked!!!')
+      }, 2500);
+      // 
+      
+      // finding amount of jokes submitted by user
+      const playersJokes = this.props.jokes.filter(
+        joke => joke.name === this.state.name
     );
-
+    
     if (this.state.name !== "") {
       this.setState({ playersJokes: playersJokes.length + 1 });
     }
-
+    
     // name for alert. setting state here so the name will only change on submit
     this.setState({alertName: this.state.name})
   };
+  
+  
+  clicked = (name,player) => {
+    this.setState({ name: name });
 
-  clicked = name => {
-    // console.log('clicked')
-    this.setState({ showForm: true, name: name });
+    // seleceted players name display colour
+    if(player === 'playerOne'){
+      this.setState({playersColour: 'blue'})
+    }
+    else{
+      this.setState({playersColour: 'red'})
+    }
+
+    
   };
 
   render() {
@@ -164,14 +180,14 @@ export class Forms extends Component {
       <div className="WhoseJoke">
         {" "}
         <CButton
-          click={() => this.clicked(this.props.playerOne)}
+          click={() => this.clicked(this.props.playerOne,'playerOne')}
           class="WelcomeButton"
         >
           {this.props.playerOne}
         </CButton>
         {this.props.isOnePlayer ? null : (
           <CButton
-            click={() => this.clicked(this.props.playerTwo)}
+            click={() => this.clicked(this.props.playerTwo,'playerTwo')}
             colour="danger"
             class="WelcomeButton"
           >
@@ -183,7 +199,7 @@ export class Forms extends Component {
 
     // Player seleceted displayed at top of page
     const selectedPlayer = (
-      <h3 style={{ display: "flex", justifyContent: "center" }}>
+      <h3 style={{ display: "flex", justifyContent: "center", color: this.state.playersColour }}>
         {" "}
         {this.state.name}
       </h3>
