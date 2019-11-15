@@ -227,10 +227,20 @@ export class Forms extends Component {
             justifyContent: "center"
         }}
       >
-        {this.state.Alertname + "'s"}{" "}
-        {this.state.playersJokes > 8 
+        {this.state.alertName + "'s"}{" "}
+        {this.state.playersJokes > 3 
           ? this.state.playersJokes + "th"
-          : this.state.playersJokes + "st"}{" "}
+          : null}
+           {this.state.playersJokes === 1 
+          ? this.state.playersJokes + "st"
+          : null}
+           {this.state.playersJokes === 2 
+          ? this.state.playersJokes + "nd"
+          : null}
+           {this.state.playersJokes === 3 
+          ? this.state.playersJokes + "rd"
+          : null}
+          {" "}
         Joke Submitted!
       </h3>
 
