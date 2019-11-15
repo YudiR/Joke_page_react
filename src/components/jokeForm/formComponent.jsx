@@ -10,7 +10,7 @@ export class Forms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOneLiner: null,
+      isOneLiner: false,
       name: "",
       oneLiner: "",
       question: "",
@@ -20,36 +20,63 @@ export class Forms extends Component {
       colour: "danger",
       submitClicked: false,
       submitAlertColour: "red",
-      playersColour: ''
+      playersColour: "",
+      formValidation: { valid: false}
     };
   }
-  
+
   componentDidMount() {
     if (this.props.isOnePlayer) {
       this.setState({ name: this.props.playerOne, showForm: true });
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // form validations
+    if (
+      prevState.oneLiner !== this.state.oneLiner ||
+      prevState.question !== this.state.question ||
+      prevState.answer !== this.state.answer ||
+      prevState.isOneLiner !== this.state.isOneLiner ||
+      prevState.submitClicked !== this.state.submitClicked
+    ) {
+      var formValidationCopy = this.state.formValidation;
+      formValidationCopy.valid = false;
+      // one liner
+      if (
+        this.state.isOneLiner &&
+        this.state.oneLiner.length > 6 &&
+        prevState.oneLiner !== this.state.oneLiner
+      ) {
+        formValidationCopy.valid = true;
+      } 
+      // answer and question
+      else if (
+        this.state.isOneLiner === false &&
+        this.state.answer.length > 2 && this.state.question.length > 2 &&
+        prevState.answer !== this.state.answer || prevState.question !== this.state.question
+      ) {
+        console.log('passed answer and question condintions')
+        formValidationCopy.valid = true;
+      } 
+      this.setState({ formValidation: formValidationCopy });
+    }
+    //
+  }
+
+  isValid = () => {
+    if (this.state.isOneLiner && this.state.oneLiner.length > 5) {
+    }
+  };
 
   change = event => {
     const { name, value, type, checked } = event.target;
     type === "checkbox"
       ? this.setState({ [name]: checked })
       : this.setState({ [name]: value });
-    // console.log(
-    //   "name!!!!",
-    //   name,
-    //   "value!",
-    //   value,
-    //   checked,
-    //   type,
-    //   event.target.value
-    // );
-    // console.log(this.state.isOneLiner);
   };
 
   submit = () => {
-    
     const jokeData = {
       isOneLiner: this.state.isOneLiner,
       oneLiner: this.state.oneLiner,
@@ -57,55 +84,51 @@ export class Forms extends Component {
       answer: this.state.answer,
       name: this.state.name
     };
-    
+
     this.props.onFormJokeSubmit(jokeData);
 
     // submit buttons colour
     this.state.colour === "danger"
-    ? this.setState({ colour: "primary" })
+      ? this.setState({ colour: "primary" })
       : this.setState({ colour: "danger" });
 
-      // submit alert colour
+    // submit alert colour
     this.state.submitAlertColour === "red"
-    ? this.setState({ submitAlertColour: "blue" })
+      ? this.setState({ submitAlertColour: "blue" })
       : this.setState({ submitAlertColour: "red" });
 
-      // setting submitClicked to determine to show submit alert
-      this.setState({ submitClicked: true });
-        
-      clearTimeout(this.cancelSubmitClicked)
-       this.cancelSubmitClicked = setTimeout(() => {
-        this.setState({ submitClicked: false })
-        console.log('canceled submitClicked!!!')
-      }, 2500);
-      // 
-      
-      // finding amount of jokes submitted by user
-      const playersJokes = this.props.jokes.filter(
-        joke => joke.name === this.state.name
+    // setting submitClicked to determine to show submit alert
+    this.setState({ submitClicked: true });
+
+    clearTimeout(this.cancelSubmitClicked);
+    this.cancelSubmitClicked = setTimeout(() => {
+      this.setState({ submitClicked: false });
+      console.log("canceled submitClicked!!!");
+    }, 2500);
+    //
+
+    // finding amount of jokes submitted by user
+    const playersJokes = this.props.jokes.filter(
+      joke => joke.name === this.state.name
     );
-    
+
     if (this.state.name !== "") {
       this.setState({ playersJokes: playersJokes.length + 1 });
     }
-    
+
     // name for alert. setting state here so the name will only change on submit
-    this.setState({alertName: this.state.name})
+    this.setState({ alertName: this.state.name });
   };
-  
-  
-  clicked = (name,player) => {
+
+  clicked = (name, player) => {
     this.setState({ name: name });
 
     // seleceted players name display colour
-    if(player === 'playerOne'){
-      this.setState({playersColour: 'blue'})
+    if (player === "playerOne") {
+      this.setState({ playersColour: "blue" });
+    } else {
+      this.setState({ playersColour: "red" });
     }
-    else{
-      this.setState({playersColour: 'red'})
-    }
-
-    
   };
 
   render() {
@@ -180,14 +203,14 @@ export class Forms extends Component {
       <div className="WhoseJoke">
         {" "}
         <CButton
-          click={() => this.clicked(this.props.playerOne,'playerOne')}
+          click={() => this.clicked(this.props.playerOne, "playerOne")}
           class="WelcomeButton"
         >
           {this.props.playerOne}
         </CButton>
         {this.props.isOnePlayer ? null : (
           <CButton
-            click={() => this.clicked(this.props.playerTwo,'playerTwo')}
+            click={() => this.clicked(this.props.playerTwo, "playerTwo")}
             colour="danger"
             class="WelcomeButton"
           >
@@ -199,7 +222,13 @@ export class Forms extends Component {
 
     // Player seleceted displayed at top of page
     const selectedPlayer = (
-      <h3 style={{ display: "flex", justifyContent: "center", color: this.state.playersColour }}>
+      <h3
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          color: this.state.playersColour
+        }}
+      >
         {" "}
         {this.state.name}
       </h3>
@@ -213,38 +242,34 @@ export class Forms extends Component {
           justifyContent: "center"
         }}
       >
-      
         Joke Submitted!
       </h3>
+    );
 
-    )
-
-    if (this.state.name !== "" ) {jokeSubmitted = (
-      <h3
-        style={{
-          color: this.state.submitAlertColour,
-          display: "flex",
+    if (this.state.name !== "") {
+      jokeSubmitted = (
+        <h3
+          style={{
+            color: this.state.submitAlertColour,
+            display: "flex",
             justifyContent: "center"
-        }}
-      >
-        {this.state.alertName + "'s"}{" "}
-        {this.state.playersJokes > 3 
-          ? this.state.playersJokes + "th"
-          : null}
-           {this.state.playersJokes === 1 
-          ? this.state.playersJokes + "st"
-          : null}
-           {this.state.playersJokes === 2 
-          ? this.state.playersJokes + "nd"
-          : null}
-           {this.state.playersJokes === 3 
-          ? this.state.playersJokes + "rd"
-          : null}
-          {" "}
-        Joke Submitted!
-      </h3>
-
-    ); } 
+          }}
+        >
+          {this.state.alertName + "'s"}{" "}
+          {this.state.playersJokes > 3 ? this.state.playersJokes + "th" : null}
+          {this.state.playersJokes === 1
+            ? this.state.playersJokes + "st"
+            : null}
+          {this.state.playersJokes === 2
+            ? this.state.playersJokes + "nd"
+            : null}
+          {this.state.playersJokes === 3
+            ? this.state.playersJokes + "rd"
+            : null}{" "}
+          Joke Submitted!
+        </h3>
+      );
+    }
     return (
       <div style={{ margin: "10vh" }}>
         {selectedPlayer}
