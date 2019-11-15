@@ -21,7 +21,8 @@ export class Forms extends Component {
       submitClicked: false,
       submitAlertColour: "red",
       playersColour: "",
-      formValidation: { valid: false}
+      formValidation: { valid: false },
+      invalidSubmitClicked: false
     };
   }
 
@@ -43,22 +44,18 @@ export class Forms extends Component {
       var formValidationCopy = this.state.formValidation;
       formValidationCopy.valid = false;
       // one liner
-      if (
-        this.state.isOneLiner &&
-        this.state.oneLiner.length > 6 &&
-        prevState.oneLiner !== this.state.oneLiner
-      ) {
+      if (this.state.isOneLiner && this.state.oneLiner.length > 6) {
         formValidationCopy.valid = true;
-      } 
+      }
       // answer and question
       else if (
         this.state.isOneLiner === false &&
-        this.state.answer.length > 2 && this.state.question.length > 2 &&
-        prevState.answer !== this.state.answer || prevState.question !== this.state.question
+        this.state.answer.length > 2 &&
+        this.state.question.length > 2
       ) {
-        console.log('passed answer and question condintions')
+        console.log("passed answer and question condintions");
         formValidationCopy.valid = true;
-      } 
+      }
       this.setState({ formValidation: formValidationCopy });
     }
     //
@@ -72,7 +69,7 @@ export class Forms extends Component {
   change = event => {
     const { name, value, type, checked } = event.target;
     type === "checkbox"
-      ? this.setState({ [name]: checked })
+      ? this.setState({ [name]: checked,invalidSubmitClicked:false })
       : this.setState({ [name]: value });
   };
 
@@ -118,6 +115,15 @@ export class Forms extends Component {
 
     // name for alert. setting state here so the name will only change on submit
     this.setState({ alertName: this.state.name });
+
+    // clearing inputs on submit by clearing state
+    this.state.isOneLiner
+      ? this.setState({ oneLiner: "" })
+      : this.setState({ answer: "", question: "" });
+    // 
+    // clearing invalid submit warning on valid submit
+      this.setState({invalidSubmitClicked: false})
+    // 
   };
 
   clicked = (name, player) => {
@@ -129,15 +135,25 @@ export class Forms extends Component {
     } else {
       this.setState({ playersColour: "red" });
     }
-  };
+  }
 
   render() {
+    // css style for form on invalid submit
+    let colourInvalidSubmit;
+    colourInvalidSubmit =
+      this.state.formValidation.valid === false &&
+      this.state.invalidSubmitClicked
+        ? { border: "2px solid red" }
+        : null
+    
+    
+    // 
     const jokeForm = (
       <Form>
         <div className="CheckBoxAndSubmit">
           <Form.Group id="formGridCheckbox">
             <Form.Check
-              // value={isOneLiner}
+              value={this.state.isOneLiner}
               name="isOneLiner"
               type="checkbox"
               label="One Liner"
@@ -151,8 +167,9 @@ export class Forms extends Component {
           <Form.Group testid="oneLiner" controlId="exampleForm.ControlInput2">
             <Form.Label></Form.Label>
             <Form.Control
-              // value={oneLiner}
+              value={this.state.oneLiner}
               // type="email"
+              style= {colourInvalidSubmit}
               name="oneLiner"
               placeholder="One Liner"
               onChange={event => {
@@ -166,7 +183,8 @@ export class Forms extends Component {
             <Form.Group controlId="exampleForm.ControlInput1">
               <Form.Label>Question</Form.Label>
               <Form.Control
-                // value={email}
+                style= {colourInvalidSubmit}
+                value={this.state.question}
                 // type="email"
                 name="question"
                 placeholder="Question"
@@ -179,7 +197,8 @@ export class Forms extends Component {
             <Form.Group controlId="exampleForm.ControlTextarea1">
               <Form.Label>Answer</Form.Label>
               <Form.Control
-                // value={answer}
+                value={this.state.answer}
+                style= {colourInvalidSubmit}
                 as="textarea"
                 placeholder="Answer"
                 name="answer"
@@ -192,9 +211,20 @@ export class Forms extends Component {
           </React.Fragment>
         )}
         <div className="CheckBoxAndSubmit">
-          <Button onClick={this.submit} variant={this.state.colour}>
-            SUBMIT YOUR JOKE
-          </Button>
+          {this.state.formValidation.valid === false ? (
+            <Button
+              onClick={() => {
+                this.setState({ invalidSubmitClicked: true });
+              }}
+              variant={"success"}
+            >
+              Enter a Joke And Submit it!!!
+            </Button>
+          ) : (
+            <Button onClick={this.submit} variant={this.state.colour}>
+              SUBMIT YOUR JOKE
+            </Button>
+          )}
         </div>
       </Form>
     );
@@ -270,6 +300,7 @@ export class Forms extends Component {
         </h3>
       );
     }
+  
     return (
       <div style={{ margin: "10vh" }}>
         {selectedPlayer}
