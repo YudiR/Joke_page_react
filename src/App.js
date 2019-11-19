@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import MainPage from "./pages/mainPage";
+import MainPage from "./pages/xAndOs/mainPage/mainPage";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import FormPage from "./pages/formPage";
 import WelcomePage from './pages/welcomePage/welcomePage'
+import XandOsPage from './pages/xAndOs/xAndOs'
 import Navbar from './components/navBar/navBar'
 import { connect } from "react-redux";
 
@@ -96,7 +97,14 @@ class App extends React.Component {
                 <WelcomePage/>
               )}
             />
-            <Route path="/" exact render={props => <WelcomePage/>} />
+             <Route
+              path="/"
+              exact
+              render={props => ( 
+                <XandOsPage/>
+              )}
+            />
+            <Route path="/welcome" exact render={props => <WelcomePage/>} />
           </Switch>
         </Router>
       </div>

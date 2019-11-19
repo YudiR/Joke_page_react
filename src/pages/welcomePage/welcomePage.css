@@ -7,7 +7,13 @@
   max-width: 75%; */
 }
 
-
+.goBack{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10vh;
+  padding-top: 3vh;
+}
 
 .InputTitle {
   font-size: 1.3rem;

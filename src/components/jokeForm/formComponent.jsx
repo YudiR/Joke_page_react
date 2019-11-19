@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Form, Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect }   from "react-redux";
 import CButton from "../ui/button";
 import css from "./formComponent.css";
 import * as action from "../../store/actions/forms";
@@ -28,7 +28,7 @@ export class Forms extends Component {
 
   componentDidMount() {
     if (this.props.isOnePlayer) {
-      this.setState({ name: this.props.playerOne, showForm: true });
+      this.setState({ name: this.props.playerOne, playersColour: 'blue' });
     }
   }
 

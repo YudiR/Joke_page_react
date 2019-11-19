@@ -37,7 +37,6 @@ class WelcomePage extends Component {
   };
 
   onSubmit = () => {
-    
     var playerOne = this.state.playerOnesName;
     var playerTwo = this.state.playerTwosName;
     console.log("player two", this.state.playerTwosName);
@@ -48,11 +47,16 @@ class WelcomePage extends Component {
       playerOne = "Player One";
     }
     this.props.onNameSubmit(playerOne, playerTwo);
-      
-    const url = window.location.href.indexOf('yourJoke') > -1 ? '/yourJoke' : '/mainPage' 
+
+    const url =
+      window.location.href.indexOf("yourJoke") > -1 ? "/yourJoke" : "/mainPage";
 
     this.props.history.push(url);
   };
+
+  goBack = () => {
+    this.setState({showInput: false})
+  }
 
   render() {
     const buttons = (
@@ -124,12 +128,27 @@ class WelcomePage extends Component {
       </Button>
     );
 
+    // Button for going back to how many players selection
+    const goBackButton = (
+      <Button
+      colour = 'warning'
+      click={() => this.goBack()}>
+        Go Back?
+      </Button>
+    )
+    // 
+
     return (
-      <div className="WelcomePage">
-        {this.state.showInput && input}
-        {this.state.showInput === false && buttons}
-        {this.state.showInput && submitButton}
-      </div>
+      <React.Fragment>
+        <div className = 'goBack'>
+       {this.state.showInput && goBackButton}
+        </div>
+        <div className="WelcomePage">
+          {this.state.showInput && input}
+          {this.state.showInput === false && buttons}
+          {this.state.showInput && submitButton}
+        </div>
+      </React.Fragment>
     );
   }
 }

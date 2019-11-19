@@ -17,10 +17,7 @@ describe("<FormPage/>", () => {
     wrapper = shallow(<Forms  />);
   });
 
-  it("There is link to home on page", () => {
-    console.log(wrapper.debug)
-    expect(wrapper.contains(<Link to="/">Home</Link>)).toEqual(true)
-  });
+ 
 
   it("should have answer and question inputs.", () => {
    expect(wrapper.find({controlId: 'exampleForm.ControlTextarea1'}))

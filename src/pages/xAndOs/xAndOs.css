@@ -1,0 +1,26 @@
+ /* .container {
+  border: 1px solid red;
+  margin: 10vh;
+ 
+} */
+
+/* .row {
+  border: 5px solid green;
+}  */
+
+.col {
+  border: 4px dotted blue;
+}
+
+
+
+.box {
+  font-size: 20vh;
+  font-weight: bold;
+  justify-content: center;
+  display: flex;
+}
+
+.TopRow{
+    padding-top: 3vh
+}

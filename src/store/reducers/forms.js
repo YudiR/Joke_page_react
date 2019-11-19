@@ -1,6 +1,6 @@
 const initialState = {
-  playerOneName: 'Player Two',
-  playerTwoName: 'Player One',
+  playerOneName: 'Player One',
+  playerTwoName: 'Player Two',
   jokes: [],
   namesSubmitted: false,
   isOnePlayer: false

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import ApiJokes from "../components/oneLinerApiJokes/apiJokes";
-import Jokes from "../components/aQandOneLinerJokes/jokes";
+import ApiJokes from "../../../components/oneLinerApiJokes/apiJokes";
+import Jokes from "../../../components/aQandOneLinerJokes/jokes";
 import { Link } from "react-router-dom";
-import YourJoke from "../components/personalJoke/yourjoke";
+import YourJoke from "../../../components/personalJoke/yourjoke";
 import { connect } from "react-redux";
 import {Button  as BButton}  from 'react-bootstrap'
 
