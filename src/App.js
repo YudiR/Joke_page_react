@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import MainPage from "./pages/xAndOs/mainPage/mainPage";
+import MainPage from "./pages/mainPage/mainPage";
 import {
   BrowserRouter as Router,
   Route,

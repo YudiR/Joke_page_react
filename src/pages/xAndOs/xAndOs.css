@@ -1,18 +1,18 @@
- /* .container {
+/* .container {
   border: 1px solid red;
-  margin: 10vh;
- 
 } */
+
+.endOfGameAlert {
+  padding-top: 25vh;
+}
 
 /* .row {
   border: 5px solid green;
 }  */
 
 .col {
-  border: 4px dotted blue;
+  border: 1px dotted black;
 }
-
-
 
 .box {
   font-size: 20vh;
@@ -21,6 +21,6 @@
   display: flex;
 }
 
-.TopRow{
-    padding-top: 3vh
+.TopRow {
+  padding-top: 3vh;
 }

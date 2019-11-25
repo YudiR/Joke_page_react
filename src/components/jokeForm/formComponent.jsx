@@ -129,7 +129,6 @@ export class Forms extends Component {
   clicked = (name, player) => {
     this.setState({ name: name });
 
-    // seleceted players name display colour
     if (player === "playerOne") {
       this.setState({ playersColour: "blue" });
     } else {
@@ -138,7 +137,6 @@ export class Forms extends Component {
   }
 
   render() {
-    // css style for form on invalid submit
     let colourInvalidSubmit;
     colourInvalidSubmit =
       this.state.formValidation.valid === false &&
@@ -147,7 +145,6 @@ export class Forms extends Component {
         : null
     
     
-    // 
     const jokeForm = (
       <Form>
         <div className="CheckBoxAndSubmit">
@@ -250,7 +247,6 @@ export class Forms extends Component {
       </div>
     );
 
-    // Player seleceted displayed at top of page
     const selectedPlayer = (
       <h3
         style={{
@@ -263,7 +259,6 @@ export class Forms extends Component {
         {this.state.name}
       </h3>
     );
-    // Joke submitted alert. Top of page
     let jokeSubmitted = (
       <h3
         style={{
