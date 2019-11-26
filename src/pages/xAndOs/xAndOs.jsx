@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import css from "./xAndOs.css";
 import Button from "../../components/ui/button";
 import { connect } from "react-redux";
+import * as action from '../../store/actions/xAndOs'
 
 export class XandOs extends Component {
   constructor(props) {
@@ -10,8 +11,6 @@ export class XandOs extends Component {
     this.state = {
       playerOneClicks: [],
       playerTwoClicks: [],
-      playerOneWins: 0,
-      playerTwoWins: 0,
       whoseTurn: "playerOne",
       winnerIs: "",
       playersTurnName: this.props.playerOneName,
@@ -28,10 +27,15 @@ export class XandOs extends Component {
     };
   }
 
-  componentDidUpdate(prevState, prevProps) {
-    console.log('prev vs this state wins', prevProps.playerOneWins === this.state.playerOneWins && prevProps.playerTwoWins === this.state.playerTwoWins)
-  // console.log('two wins prevstate', prevProps.playerTwoWins, 'this.state two wins', this.state.playerTwoWins)
+
+  componentDidUpdate (prevState,prevProps) {
+    if(this.state.playerOneClicks.length + this.state.playerTwoClicks === 9){
+    console.log('player one and two',prevState.playerOneWins === this.props.playerOneWins && prevState.playerTwoWins === this.props.playerTwoWins )
+    // console.log('player Two',prevState.playerTwoWins === this.props.playerTwoWins )
+}
   }
+
+ 
   onClick = number => {
     const one = [1, 2, 3];
     const two = [4, 5, 6];
@@ -117,9 +121,9 @@ export class XandOs extends Component {
             nine: "?"
           });
 
-          this.setState((prevState, props) => ({
-            playerOneWins: prevState.playerOneWins + 1
-          }));
+          this.props.onPlayerOneWins()
+
+          
         }
         setTimeout(() => {
           this.setState({ hideGame: false });
@@ -187,9 +191,8 @@ export class XandOs extends Component {
             eight: "?",
             nine: "?"
           });
-          this.setState((prevState, props) => ({
-            playerTwoWins: prevState.playerTwoWins + 1
-          }));
+
+          this.props.onPlayerTwoWins()
 
           setTimeout(() => {
             this.setState({ hideGame: false });
@@ -202,12 +205,13 @@ export class XandOs extends Component {
       this.state.playerOneClicks.length + this.state.playerTwoClicks.length ===
       8
     ) {
-      this.setState(prevProps => ({
+      console.log('inside cat game if condition!!')
+      this.setState( prevState => ({
         playerOneClicks: [],
         playerTwoClicks: [],
         catsGame:
-        prevProps.playerOneWins === this.state.playerOneWins &&
-        prevProps.playerTwoWins === this.state.playerTwoWins,
+        prevState.playerOneWins === this.props.playerOneWins &&
+        prevState.playerTwoWins === this.props.playerTwoWins ,
         hideGame: true,
         one: "?",
         two: "?",
@@ -237,12 +241,12 @@ export class XandOs extends Component {
 
     const playerOneButton = (
       <Button testid="playerOnesWinsButton" colour="primary">
-        Player One has {this.state.playerOneWins} wins
+        Player One has {this.props.playerOneWins} wins
       </Button>
     );
     const playerTwoButton = (
       <Button colour="danger">
-        Player two has {this.state.playerTwoWins} wins
+        Player two has {this.props.playerTwoWins} wins
       </Button>
     );
     const whoseTurn = (
@@ -483,8 +487,22 @@ export class XandOs extends Component {
 const mapStateToProps = state => {
   return {
     playerOneName: state.forms.playerOneName,
-    playerTwoName: state.forms.playerTwoName
+    playerTwoName: state.forms.playerTwoName,
+    playerOneWins: state.xAndOs.playerOneWins,
+    playerTwoWins: state.xAndOs.playerTwoWins,
+
   };
 };
 
-export default connect(mapStateToProps)(XandOs);
+const mapDispatchToProps = dispatch => {
+  return {
+    onPlayerOneWins: () => {
+      dispatch(action.playerOneWins());
+    },
+    onPlayerTwoWins: () => {
+      dispatch(action.playerTwoWins())
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(XandOs);

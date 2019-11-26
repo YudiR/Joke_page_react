@@ -6,8 +6,9 @@ import formsReducer from "./store/reducers/forms";
 import * as serviceWorker from "./serviceWorker";
 import { createStore, compose,combineReducers } from "redux";
 import { Provider } from "react-redux";
+import xAndOsReducer from './store/reducers/xAndOs'
 
-const rootReducer  = combineReducers({forms: formsReducer})
+const rootReducer  = combineReducers({forms: formsReducer, xAndOs: xAndOsReducer})
 
 const store = createStore(
   rootReducer,
