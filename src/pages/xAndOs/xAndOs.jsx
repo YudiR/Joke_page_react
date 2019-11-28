@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import css from "./xAndOs.css";
 import Button from "../../components/ui/button";
 import { connect } from "react-redux";
-import * as action from '../../store/actions/xAndOs'
+import * as action from "../../store/actions/xAndOs";
 
 export class XandOs extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ export class XandOs extends Component {
     this.state = {
       playerOneClicks: [],
       playerTwoClicks: [],
+      catsGame: false,
       whoseTurn: "playerOne",
       winnerIs: "",
       playersTurnName: this.props.playerOneName,
@@ -27,15 +28,19 @@ export class XandOs extends Component {
     };
   }
 
-
-  componentDidUpdate (prevState,prevProps) {
-    if(this.state.playerOneClicks.length + this.state.playerTwoClicks === 9){
-    console.log('player one and two',prevState.playerOneWins === this.props.playerOneWins && prevState.playerTwoWins === this.props.playerTwoWins )
-    // console.log('player Two',prevState.playerTwoWins === this.props.playerTwoWins )
-}
+  componentDidUpdate(prevState, prevProps) {
+    if (
+      this.state.playerOneClicks.length + this.state.playerTwoClicks.length > 8
+    ) {
+      console.log(
+        "player one and two", prevState,
+        prevState.playerOneWins === this.props.playerOneWins &&
+          prevState.playerTwoWins === this.props.playerTwoWins
+      );
+      // console.log('player Two',prevState.playerTwoWins === this.props.playerTwoWins )
+    }
   }
 
- 
   onClick = number => {
     const one = [1, 2, 3];
     const two = [4, 5, 6];
@@ -121,9 +126,7 @@ export class XandOs extends Component {
             nine: "?"
           });
 
-          this.props.onPlayerOneWins()
-
-          
+          this.props.onPlayerOneWins();
         }
         setTimeout(() => {
           this.setState({ hideGame: false });
@@ -192,7 +195,7 @@ export class XandOs extends Component {
             nine: "?"
           });
 
-          this.props.onPlayerTwoWins()
+          this.props.onPlayerTwoWins();
 
           setTimeout(() => {
             this.setState({ hideGame: false });
@@ -202,27 +205,31 @@ export class XandOs extends Component {
         break;
     }
     if (
-      this.state.playerOneClicks.length + this.state.playerTwoClicks.length ===
-      8
+      this.state.playerOneClicks.length + this.state.playerTwoClicks.length === 8
     ) {
-      console.log('inside cat game if condition!!')
-      this.setState( prevState => ({
-        playerOneClicks: [],
-        playerTwoClicks: [],
-        catsGame:
-        prevState.playerOneWins === this.props.playerOneWins &&
-        prevState.playerTwoWins === this.props.playerTwoWins ,
-        hideGame: true,
-        one: "?",
-        two: "?",
-        three: "?",
-        four: "?",
-        five: "?",
-        six: "?",
-        seven: "?",
-        eight: "?",
-        nine: "?"
-      }));
+      console.log("inside cat game if condition!!");
+
+      this.setState(
+        (prevState,prevProps) => (
+          {
+            playerOneClicks: [],
+            playerTwoClicks: [],
+            catsGame:
+              prevProps.playerOneWins === this.props.playerOneWins &&
+              prevProps.playerTwoWins === this.props.playerTwoWins,
+            hideGame: true,
+            one: "?",
+            two: "?",
+            three: "?",
+            four: "?",
+            five: "?",
+            six: "?",
+            seven: "?",
+            eight: "?",
+            nine: "?"
+          }
+        )
+      );
 
       this.setState({});
       setTimeout(() => {
@@ -489,8 +496,7 @@ const mapStateToProps = state => {
     playerOneName: state.forms.playerOneName,
     playerTwoName: state.forms.playerTwoName,
     playerOneWins: state.xAndOs.playerOneWins,
-    playerTwoWins: state.xAndOs.playerTwoWins,
-
+    playerTwoWins: state.xAndOs.playerTwoWins
   };
 };
 
@@ -500,7 +506,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(action.playerOneWins());
     },
     onPlayerTwoWins: () => {
-      dispatch(action.playerTwoWins())
+      dispatch(action.playerTwoWins());
     }
   };
 };
