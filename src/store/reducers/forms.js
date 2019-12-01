@@ -6,7 +6,6 @@ const initialState = {
   isOnePlayer: false
 };
 
-// {title: null,isOneLiner: false, oneLiner: null, question }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

@@ -48,14 +48,21 @@ class WelcomePage extends Component {
     }
     this.props.onNameSubmit(playerOne, playerTwo);
 
-    const url =
+    let url =
       window.location.href.indexOf("yourJoke") > -1 ? "/yourJoke" : "/mainPage";
+    url = 
+    window.location.href.indexOf("xandos") > -1 && !this.props.isOnePlayer ? "/xandos" : "/mainPage";
 
+if(url === "/mainPage" && window.location.href.indexOf("xandos") > -1 ){
+  alert('There Must be Two Players to Play X And Os')
+}
+    //  url === "/xandos" ? alert('There Must be Two Players to Play X And Os') : null
     this.props.history.push(url);
   };
 
   goBack = () => {
-    this.setState({showInput: false})
+    this.setState({showInput: false, isTwoPlayers: false})
+    this.props.onOnePlayer(false);
   }
 
   render() {
@@ -128,7 +135,6 @@ class WelcomePage extends Component {
       </Button>
     );
 
-    // Button for going back to how many players selection
     const goBackButton = (
       <Button
       colour = 'warning'
@@ -136,7 +142,6 @@ class WelcomePage extends Component {
         Go Back?
       </Button>
     )
-    // 
 
     return (
       <React.Fragment>
@@ -145,7 +150,7 @@ class WelcomePage extends Component {
         </div>
         <div className="WelcomePage">
           {this.state.showInput && input}
-          {this.state.showInput === false && buttons}
+          {!this.state.showInput && buttons}
           {this.state.showInput && submitButton}
         </div>
       </React.Fragment>
@@ -165,7 +170,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {isOnePlayer: state.forms.isOnePlayer};
 };
 
 export default withRouter(
